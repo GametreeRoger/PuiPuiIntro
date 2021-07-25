@@ -34,7 +34,7 @@ class PuiPuiViewController: UIViewController {
     private var playTimer: Timer?
     private var soundPlayer: AVAudioPlayer?
     
-    private var currentIndext: Int {
+    private var currentIndex: Int {
         set {
             if newValue < 0 {
                 index = PuiPuiData.data.count - 1
@@ -74,29 +74,29 @@ class PuiPuiViewController: UIViewController {
         if let url = Bundle.main.url(forResource: "sound", withExtension: "mp3") {
             soundPlayer = try? AVAudioPlayer(contentsOf: url)
         }
-        currentIndext = 0
+        currentIndex = 0
     }
     @IBAction func previousPage(_ sender: Any) {
-        currentIndext -= 1
+        currentIndex -= 1
     }
     
     @IBAction func nextPage(_ sender: Any) {
-        currentIndext += 1
+        currentIndex += 1
     }
 
     @IBAction func pageControlChanged(_ sender: UIPageControl) {
-        currentIndext = sender.currentPage
+        currentIndex = sender.currentPage
     }
     
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
-        currentIndext = sender.selectedSegmentIndex
+        currentIndex = sender.selectedSegmentIndex
     }
     
     @IBAction func swipeChanged(_ sender: UISwipeGestureRecognizer) {
         if sender.direction == .left {
-            currentIndext -= 1
+            currentIndex -= 1
         } else {
-            currentIndext += 1
+            currentIndex += 1
         }
     }
     
@@ -112,12 +112,12 @@ class PuiPuiViewController: UIViewController {
     }
     
     func updateView() {
-        charaPicture.setImage(PuiPuiData.data[currentIndext].picture, dir: filpAni)
-        pageUILabel.text = String(currentIndext + 1)
-        nameUILable.text = PuiPuiData.data[currentIndext].name
-        charaIntroTextView.text = PuiPuiData.data[currentIndext].intro
-        pageUIPageControl.currentPage = currentIndext
-        segmentUISegmentedControl.selectedSegmentIndex = currentIndext
+        charaPicture.setImage(PuiPuiData.data[currentIndex].picture, dir: filpAni)
+        pageUILabel.text = String(currentIndex + 1)
+        nameUILable.text = PuiPuiData.data[currentIndex].name
+        charaIntroTextView.text = PuiPuiData.data[currentIndex].intro
+        pageUIPageControl.currentPage = currentIndex
+        segmentUISegmentedControl.selectedSegmentIndex = currentIndex
         
         if let soundPlayer = soundPlayer {
             if soundPlayer.isPlaying {
@@ -129,7 +129,7 @@ class PuiPuiViewController: UIViewController {
     }
     
     @objc func repeatTimerAction() {
-        currentIndext += 1
+        currentIndex += 1
     }
 }
 
