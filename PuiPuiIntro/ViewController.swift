@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 
 class ViewController: UIViewController {
 
@@ -31,6 +32,7 @@ class ViewController: UIViewController {
     private var filpAni = FlipPage.none
     private var isRepeat = false
     private var playTimer: Timer?
+    private var soundPlayer: AVAudioPlayer?
     
     private var currentIndext: Int {
         set {
@@ -69,6 +71,9 @@ class ViewController: UIViewController {
         segmentUISegmentedControl.replaceSegments(datas: PuiPuiData.data)
         segmentUISegmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.orange], for: .selected)
         segmentUISegmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+        if let url = Bundle.main.url(forResource: "sound", withExtension: "mp3") {
+            soundPlayer = try? AVAudioPlayer(contentsOf: url)
+        }
         currentIndext = 0
     }
     @IBAction func previousPage(_ sender: Any) {
@@ -113,6 +118,14 @@ class ViewController: UIViewController {
         charaIntroTextView.text = PuiPuiData.data[currentIndext].intro
         pageUIPageControl.currentPage = currentIndext
         segmentUISegmentedControl.selectedSegmentIndex = currentIndext
+        
+        if let soundPlayer = soundPlayer {
+            if soundPlayer.isPlaying {
+                soundPlayer.currentTime = 0
+                soundPlayer.stop()
+            }
+            soundPlayer.play()
+        }
     }
     
     @objc func repeatTimerAction() {
