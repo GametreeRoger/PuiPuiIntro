@@ -8,7 +8,7 @@
 import UIKit
 import AVKit
 
-class ViewController: UIViewController {
+class PuiPuiViewController: UIViewController {
 
     @IBOutlet weak var charaPicture: UIImageView!
     

@@ -5,7 +5,6 @@
 //  Created by 張又壬 on 2021/7/25.
 //
 
-import Foundation
 import UIKit
 
 struct PuiPuiData {
