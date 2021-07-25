@@ -25,8 +25,12 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var segmentUISegmentedControl: UISegmentedControl!
     
+    @IBOutlet weak var repeatUIButton: UIButton!
+    
     private var index = 0;
     private var filpAni = FlipPage.none
+    private var isRepeat = false
+    private var playTimer: Timer?
     
     private var currentIndext: Int {
         set {
@@ -58,10 +62,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        charaPicture.layer.cornerRadius = 10
+        charaPicture.layer.borderWidth = 5
+        charaPicture.layer.borderColor = UIColor(named: "TextColor")?.cgColor
         pageUIPageControl.numberOfPages = PuiPuiData.data.count
         segmentUISegmentedControl.replaceSegments(datas: PuiPuiData.data)
+        segmentUISegmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.orange], for: .selected)
+        segmentUISegmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
         currentIndext = 0
-//        updateView();
     }
     @IBAction func previousPage(_ sender: Any) {
         currentIndext -= 1
@@ -87,6 +95,17 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func repeatPlay(_ sender: UIButton) {
+        isRepeat = !isRepeat
+        if isRepeat {
+            repeatUIButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
+            playTimer = Timer.scheduledTimer(timeInterval: 0.8, target: self, selector: #selector(repeatTimerAction), userInfo: nil, repeats: true)
+        } else {
+            repeatUIButton.setImage(UIImage(systemName: "repeat"), for: .normal)
+            playTimer?.invalidate()
+        }
+    }
+    
     func updateView() {
         charaPicture.setImage(PuiPuiData.data[currentIndext].picture, dir: filpAni)
         pageUILabel.text = String(currentIndext + 1)
@@ -94,6 +113,10 @@ class ViewController: UIViewController {
         charaIntroTextView.text = PuiPuiData.data[currentIndext].intro
         pageUIPageControl.currentPage = currentIndext
         segmentUISegmentedControl.selectedSegmentIndex = currentIndext
+    }
+    
+    @objc func repeatTimerAction() {
+        currentIndext += 1
     }
 }
 
